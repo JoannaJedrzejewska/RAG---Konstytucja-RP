@@ -1,0 +1,5 @@
+tfidf_vectorizer.pkl
+tfidf_matrix.pkl
+konstytucja_clean.txt
+history.jsonl
+__pycache__/
