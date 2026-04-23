@@ -102,12 +102,12 @@ def parse_into_chunks(text: str) -> list[dict]:
 def build_tfidf_index(chunks: list[dict]):
     texts = [c["text"] for c in chunks]
     vectorizer = TfidfVectorizer(
-        ngram_range=(1, 3),
-        max_features=15_000,
-        sublinear_tf=True,
-        analyzer="word",
-        min_df=1,
-    )
+    ngram_range=(1, 2),      # mniej szumu z trigramów
+    max_features=10_000,
+    sublinear_tf=True,
+    min_df=2,                # ignoruj terminy w tylko 1 artykule
+    max_df=0.85,             # ignoruj zbyt pospolite słowa
+)
     matrix = vectorizer.fit_transform(texts)
     return vectorizer, matrix
 
@@ -140,7 +140,6 @@ def main(pdf_path: str):
     raw   = extract_text_from_pdf(pdf_path)
     text  = clean_text(raw)
 
-    # opcjonalnie: zapisz czysty tekst do podglądu
     txt_path = os.path.join(BASE_DIR, "konstytucja_clean.txt")
     with open(txt_path, "w", encoding="utf-8") as f:
         f.write(text)
@@ -171,6 +170,6 @@ def main(pdf_path: str):
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Użycie: python indexer.py <ścieżka_do_pdf>")
-        print("Przykład: python indexer.py ../D19970483Lj.pdf")
+        print("Przykład: python indexer.py D19970483Lj.pdf")
         sys.exit(1)
     main(sys.argv[1])

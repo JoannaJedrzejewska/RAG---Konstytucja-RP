@@ -81,7 +81,6 @@ def format_sources_html(chunks: list) -> str:
         f'</table></div>'
     )
 
-# ── Pełne artykuły (Markdown) ─────────────────────────────────────────────────
 
 def format_chunks_detail(chunks: list) -> str:
     if not chunks:

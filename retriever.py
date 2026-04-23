@@ -100,7 +100,7 @@ def retrieve(query: str, top_k: int = 5, chapter_filter: str | None = None,
         if art in seen_arts:
             continue
         seen_arts.add(art)
-        if scores[idx] < 0.02:
+        if scores[idx] < 0.08:
             continue
         chunk = dict(CHUNKS[idx])
         chunk["score"] = float(scores[idx])
@@ -120,6 +120,6 @@ def retrieve_smart(query: str, top_k: int = 5, highlight: bool = False,
     chapter = detect_chapter(query)
     results = retrieve(query, top_k=top_k, chapter_filter=chapter,
                        highlight=highlight, colored=colored)
-    if len(results) < 2:
+    if len(results) < 2 or (results and results[0]['score'] < 0.08):
         results = retrieve(query, top_k=top_k, highlight=highlight, colored=colored)
     return results, chapter
